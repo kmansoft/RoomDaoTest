@@ -14,11 +14,11 @@ class Message(
     @ColumnInfo(name = "flags") var flags: Int
 ) {
 
-    fun isStarred() = (flags and Message.FLAG_STARRED) != 0
-    fun isUnread() = (flags and Message.FLAG_SEEN) == 0
+    fun isStarred() = (flags and FLAG_STARRED) != 0
+    fun isUnread() = (flags and FLAG_UNREAD) == 0
 
     companion object {
-        val FLAG_SEEN = 0x0001
+        val FLAG_UNREAD = 0x0001
         val FLAG_STARRED = 1 shl 1
     }
 }

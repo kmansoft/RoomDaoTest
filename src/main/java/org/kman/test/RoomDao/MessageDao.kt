@@ -28,26 +28,17 @@ interface MessageDao {
     fun deleteAll()
 
     fun setIsUnread(id: Long, isUnread: Boolean) {
-        val flagsOld = getFlags(id)
-        val flagsNew = if (isUnread) {
-            flagsOld and Message.FLAG_SEEN.inv()
+        if (isUnread) {
+            setFlagsImpl(id, Message.FLAG_UNREAD, 0)
         } else {
-            flagsOld or Message.FLAG_SEEN
-        }
-
-        if (flagsOld != flagsNew) {
-            setFlags(id, flagsNew)
+            setFlagsImpl(id, 0, Message.FLAG_UNREAD)
         }
     }
 
     @Transaction
-    fun setIsStarred(id: Long, isStarred: Boolean) {
+    fun setFlagsImpl(id: Long, set: Int, clear: Int) {
         val flagsOld = getFlags(id)
-        val flagsNew = if (isStarred) {
-            flagsOld or Message.FLAG_STARRED
-        } else {
-            flagsOld and Message.FLAG_STARRED.inv()
-        }
+        val flagsNew = (flagsOld or set) and clear.inv()
 
         if (flagsOld != flagsNew) {
             setFlags(id, flagsNew)
