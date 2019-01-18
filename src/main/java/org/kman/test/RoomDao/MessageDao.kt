@@ -4,28 +4,28 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
-interface MessageDao {
+abstract class MessageDao {
 
     @Query("SELECT * from Messages ORDER BY when_date DESC")
-    fun getAll(): LiveData<List<Message>>
+    abstract fun getAll(): LiveData<List<Message>>
 
     @Insert
-    fun insert(message: Message): Long
+    abstract fun insert(message: Message): Long
 
     @Update
-    fun update(message: Message)
+    abstract fun update(message: Message)
 
     @Query("UPDATE Messages SET flags=:flags WHERE _id = :id")
-    fun setFlags(id: Long, flags: Int)
+    abstract fun setFlags(id: Long, flags: Int)
 
     @Query("SELECT flags FROM Messages WHERE _id = :id")
-    fun getFlags(id: Long): Int
+    abstract fun getFlags(id: Long): Int
 
     @Query("DELETE FROM Messages WHERE _id = :id")
-    fun deleteByDbId(id: Long)
+    abstract fun deleteByDbId(id: Long)
 
     @Query("DELETE FROM Messages")
-    fun deleteAll()
+    abstract fun deleteAll()
 
     fun setIsUnread(id: Long, isUnread: Boolean) {
         if (isUnread) {
@@ -36,7 +36,7 @@ interface MessageDao {
     }
 
     @Transaction
-    fun setFlagsImpl(id: Long, set: Int, clear: Int) {
+    open fun setFlagsImpl(id: Long, set: Int, clear: Int) {
         val flagsOld = getFlags(id)
         val flagsNew = (flagsOld or set) and clear.inv()
 
