@@ -1,4 +1,6 @@
-Sample code for https://issuetracker.google.com/issues/123007599
+Sample code for:
+
+https://issuetracker.google.com/issues/123007599
 
 gradle assembleDebug
 
